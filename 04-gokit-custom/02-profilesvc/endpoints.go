@@ -24,9 +24,9 @@ import (
 // construct individual endpoints using transport/http.NewClient, combine them
 // into an Endpoints, and return it to the caller as a Service.
 type Endpoints struct {
-	PostProfileEndpoint   endpoint.Endpoint
-	GetProfileEndpoint    endpoint.Endpoint
-	PutProfileEndpoint    endpoint.Endpoint
+	PostProfileEndpoint endpoint.Endpoint
+	GetProfileEndpoint  endpoint.Endpoint
+	// PutProfileEndpoint    endpoint.Endpoint
 	PatchProfileEndpoint  endpoint.Endpoint
 	DeleteProfileEndpoint endpoint.Endpoint
 	GetAddressesEndpoint  endpoint.Endpoint
@@ -40,9 +40,9 @@ type Endpoints struct {
 // server.
 func MakeServerEndpoints(s Service) Endpoints {
 	return Endpoints{
-		PostProfileEndpoint:   MakePostProfileEndpoint(s),
-		GetProfileEndpoint:    MakeGetProfileEndpoint(s),
-		PutProfileEndpoint:    MakePutProfileEndpoint(s),
+		PostProfileEndpoint: MakePostProfileEndpoint(s),
+		GetProfileEndpoint:  MakeGetProfileEndpoint(s),
+		// PutProfileEndpoint:    MakePutProfileEndpoint(s),
 		PatchProfileEndpoint:  MakePatchProfileEndpoint(s),
 		DeleteProfileEndpoint: MakeDeleteProfileEndpoint(s),
 	}
@@ -68,9 +68,9 @@ func MakeClientEndpoints(instance string) (Endpoints, error) {
 	// encoders for each endpoint.
 
 	return Endpoints{
-		PostProfileEndpoint:   httptransport.NewClient("POST", tgt, encodePostProfileRequest, decodePostProfileResponse, options...).Endpoint(),
-		GetProfileEndpoint:    httptransport.NewClient("GET", tgt, encodeGetProfileRequest, decodeGetProfileResponse, options...).Endpoint(),
-		PutProfileEndpoint:    httptransport.NewClient("PUT", tgt, encodePutProfileRequest, decodePutProfileResponse, options...).Endpoint(),
+		PostProfileEndpoint: httptransport.NewClient("POST", tgt, encodePostProfileRequest, decodePostProfileResponse, options...).Endpoint(),
+		GetProfileEndpoint:  httptransport.NewClient("GET", tgt, encodeGetProfileRequest, decodeGetProfileResponse, options...).Endpoint(),
+		// PutProfileEndpoint:    httptransport.NewClient("PUT", tgt, encodePutProfileRequest, decodePutProfileResponse, options...).Endpoint(),
 		PatchProfileEndpoint:  httptransport.NewClient("PATCH", tgt, encodePatchProfileRequest, decodePatchProfileResponse, options...).Endpoint(),
 		DeleteProfileEndpoint: httptransport.NewClient("DELETE", tgt, encodeDeleteProfileRequest, decodeDeleteProfileResponse, options...).Endpoint(),
 	}, nil
@@ -99,15 +99,15 @@ func (e Endpoints) GetProfile(ctx context.Context, id string) (Profile, error) {
 }
 
 // PutProfile implements Service. Primarily useful in a client.
-func (e Endpoints) PutProfile(ctx context.Context, id string, p Profile) error {
-	request := putProfileRequest{ID: id, Profile: p}
-	response, err := e.PutProfileEndpoint(ctx, request)
-	if err != nil {
-		return err
-	}
-	resp := response.(putProfileResponse)
-	return resp.Err
-}
+// func (e Endpoints) PutProfile(ctx context.Context, id string, p Profile) error {
+// 	request := putProfileRequest{ID: id, Profile: p}
+// 	response, err := e.PutProfileEndpoint(ctx, request)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	resp := response.(putProfileResponse)
+// 	return resp.Err
+// }
 
 // PatchProfile implements Service. Primarily useful in a client.
 func (e Endpoints) PatchProfile(ctx context.Context, id string, p Profile) error {
@@ -153,13 +153,13 @@ func MakeGetProfileEndpoint(s Service) endpoint.Endpoint {
 
 // MakePutProfileEndpoint returns an endpoint via the passed service.
 // Primarily useful in a server.
-func MakePutProfileEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(putProfileRequest)
-		e := s.PutProfile(ctx, req.ID, req.Profile)
-		return putProfileResponse{Err: e}, nil
-	}
-}
+// func MakePutProfileEndpoint(s Service) endpoint.Endpoint {
+// 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+// 		req := request.(putProfileRequest)
+// 		e := s.PutProfile(ctx, req.ID, req.Profile)
+// 		return putProfileResponse{Err: e}, nil
+// 	}
+// }
 
 // MakePatchProfileEndpoint returns an endpoint via the passed service.
 // Primarily useful in a server.

@@ -51,12 +51,12 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 		encodeResponse,
 		options...,
 	))
-	r.Methods("PUT").Path("/profiles/{id}").Handler(httptransport.NewServer(
-		e.PutProfileEndpoint,
-		decodePutProfileRequest,
-		encodeResponse,
-		options...,
-	))
+	// r.Methods("PUT").Path("/profiles/{id}").Handler(httptransport.NewServer(
+	// 	e.PutProfileEndpoint,
+	// 	decodePutProfileRequest,
+	// 	encodeResponse,
+	// 	options...,
+	// ))
 	r.Methods("PATCH").Path("/profiles/{id}").Handler(httptransport.NewServer(
 		e.PatchProfileEndpoint,
 		decodePatchProfileRequest,
